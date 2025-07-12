@@ -23,7 +23,7 @@ Ce projet utilise un modèle de Machine Learning pour détecter automatiquement 
 ### 📂 1. Cloner le projet
 
 ```bash
-git clone https://github.com/ton-utilisateur/detection-fraude.git
+git clone git@github.com:mtspro7755/D-tection-de-fraude-bancaire.git
 cd detection-fraude
 ```
 
