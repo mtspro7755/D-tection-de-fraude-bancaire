@@ -1,0 +1,51 @@
+<div class="container">
+  <h2 class="mt-4 text-center">📊 Historique des Prédictions</h2>
+
+  <!-- Filtres -->
+  <div class="row mt-3">
+    <div class="col-md-6">
+      <select class="form-select" [(ngModel)]="filtre" (change)="filtrer()">
+        <option value="all">Toutes les prédictions</option>
+        <option value="fraude">Seulement Fraude</option>
+        <option value="normal">Seulement Normal</option>
+      </select>
+    </div>
+    <div class="col-md-6">
+      <input type="text" [(ngModel)]="recherche" (input)="filtrer()" class="form-control" placeholder="Rechercher...">
+    </div>
+  </div>
+
+  <!-- Chargement -->
+  <div class="text-center mt-4" *ngIf="chargement">
+    <div class="spinner-border text-primary"></div>
+    <p>Chargement de l'historique...</p>
+  </div>
+
+  <!-- Message d'erreur -->
+  <div *ngIf="erreur" class="alert alert-danger mt-4">{{ erreur }}</div>
+
+  <!-- Tableau -->
+  <table class="table table-sm table-striped mt-4" *ngIf="historiqueFiltre.length > 0">
+    <thead>
+    <tr>
+      <th>#</th><th>Prédiction</th><th>Score</th><th>Heure</th><th>Version Modèle</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of historiqueFiltre; let i = index"
+        [ngClass]="{'table-danger': item.prediction === 1, 'table-success': item.prediction === 0}">
+      <td>{{ i + 1 }}</td>
+      <td>{{ item.prediction === 1 ? 'Fraude' : 'Normal' }}</td>
+      <td>{{ (item.score * 100) | number:'1.1-1' }}%</td>
+      <td>{{ item.timestamp | date:'short' }}</td>
+      <td>{{ item.model_version || '-' }}</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <!-- Graphique -->
+  <div class="text-center mt-4" style="max-width: 300px; margin: auto;" *ngIf="chartReady">
+    <canvas #fraudeChart></canvas>
+  </div>
+
+</div>

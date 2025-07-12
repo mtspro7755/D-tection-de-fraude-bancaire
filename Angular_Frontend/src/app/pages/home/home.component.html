@@ -1,0 +1,53 @@
+<div class="container">
+  <h2 class="mt-4 text-center">🕵️‍♀️ Analyse instantanée des transactions</h2>
+
+  <form (ngSubmit)="onSubmit()" #fraudForm="ngForm">
+    <div class="row mt-4">
+      <div class="col-md-4 mb-3" *ngFor="let v of variables; index as i">
+        <label class="form-label">Variable {{ i + 1 }}</label>
+        <input
+          type="number"
+          class="form-control"
+          step="any"
+          [(ngModel)]="features[i]"
+          name="var{{ i }}"
+          required
+        />
+      </div>
+    </div>
+
+    <div class="d-flex gap-3 mt-2">
+      <button type="button" class="btn btn-outline-danger" (click)="loadFraude()">Test : Fraude</button>
+      <button type="button" class="btn btn-outline-success" (click)="loadNormal()">Test : Normal</button>
+      <button type="submit" class="btn btn-primary" [disabled]="loading || !fraudForm.form.valid">Prédire</button>
+    </div>
+  </form>
+
+  <div class="text-center mt-3" *ngIf="loading">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p>Analyse en cours...</p>
+  </div>
+
+  <div *ngIf="result" class="alert mt-4" [ngClass]="{
+    'alert-success': result.prediction === 0,
+    'alert-danger': result.prediction === 1
+  }">
+    <p><strong>{{ result.prediction === 1 ? '⚠️ FRAUDE DÉTECTÉE !' : '✅ Aucune fraude détectée.' }}</strong></p>
+    <p *ngIf="result.score">Score : {{ (result.score * 100) | number: '1.1-1' }}%</p>
+    <p *ngIf="result.timestamp">Heure : {{ result.timestamp | date:'short' }}</p>
+  </div>
+
+  <div class="progress mt-2" *ngIf="result?.score !== undefined">
+    <div
+      class="progress-bar"
+      role="progressbar"
+      [style.width.%]="result.score * 100"
+      [ngClass]="{
+        'bg-success': result.prediction === 0,
+        'bg-danger': result.prediction === 1
+      }"
+    >
+      {{ (result.score * 100) | number: '1.1-1' }}%
+    </div>
+  </div>
+</div>

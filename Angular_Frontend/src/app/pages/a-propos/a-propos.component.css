@@ -1,0 +1,11 @@
+.section-title {
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin-top: 30px;
+  margin-bottom: 10px;
+  color: #2c3e50;
+}
+.icon {
+  margin-right: 8px;
+  vertical-align: middle;
+}
